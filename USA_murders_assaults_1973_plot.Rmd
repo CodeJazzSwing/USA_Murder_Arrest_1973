@@ -1,0 +1,26 @@
+---
+output: github_document
+---
+
+```{r USA murder and assault, echo=FALSE}
+library(ggplot2)
+library(datasets)
+data("USArrests", package = "datasets")
+
+# Your ggplot code
+ggplot(USArrests, aes(x= Murder, y=UrbanPop)) + 
+  geom_point(aes(color = Murder, size = Assault), alpha = 0.6) + 
+  scale_color_gradientn(colors = rev(rainbow(7))) +
+  scale_size(range = c(2, 10)) +
+  scale_x_continuous(breaks = round(seq(min(USArrests$Murder), max(USArrests$Murder), by = 1))) + 
+  scale_y_continuous(labels = function(x) paste0(x, "%")) +  
+  geom_smooth(method="lm", col="blue", size=1) + 
+  geom_text(label=rownames(USArrests), nudge_x = 0.25, nudge_y = 0.25, check_overlap = T) + 
+  ggtitle("USA Arrests for Murder and Assault, per capita \n Year 1973") + 
+  xlab("Number of arrests per 100,000 for murder and assault") + 
+  ylab("% of the Urban Population in Each State") + 
+  labs(caption = "Source: World Almanac and Book of facts 1975. (Crime rates). via R Studio") + 
+  annotate("rect", xmin=c(12.5),xmax = c(17.5), ymin = c(40), ymax = (68), alpha=0.2, color="red", fill="pink") +
+  theme_minimal()
+
+```
